@@ -4,15 +4,15 @@
 #include<iomanip>
 using namespace std;
 
-struct node {
+struct Node {
 	int info;
-	node* pNext;
+	Node* pNext;
 };
 //typedef struct node NODE;
 
 struct List{
-	node* pHead;
-	node* pTail;
+	Node* pHead;
+	Node* pTail;
 };
 //typedef struct List LIST;
 
@@ -23,9 +23,9 @@ void CreateEmptyList(List &l)
 }
 
 //tạo 1 phần tử mới, hàm trả về địa chỉ của phần tử mới tạo
-node* CreateNode(int x)
+Node* CreateNode(int x)
 {
-    node* p = new node;
+    Node* p = new Node;
     if(p == NULL)
         exit(1);
     p->info = x;
@@ -36,7 +36,7 @@ node* CreateNode(int x)
 //Thêm phần tử vào danh sách: lưu ý khi thêm có làm cho pHead, pTail thay đổi
 
 //Thêm đầu
-void AddHead(List &l, node* p)
+void AddHead(List &l, Node* p)
 {
     if(l.pHead == NULL)
         l.pHead = l.pTail = p;
@@ -47,7 +47,7 @@ void AddHead(List &l, node* p)
 }
 
 //Thêm cuối
-void AddTail(List &l, node* p)
+void AddTail(List &l, Node* p)
 {
     if(l.pHead == NULL)
         l.pHead = l.pTail = p;
@@ -58,7 +58,7 @@ void AddTail(List &l, node* p)
 }
 
 //Thêm vào sau 1 node Q
-void AddAfterQ(List &l, node* p, node* Q)
+void AddAfterQ(List &l, Node* p, Node* Q)
 {
     if(Q != NULL)
     {
@@ -72,9 +72,9 @@ void AddAfterQ(List &l, node* p, node* Q)
 }
 
 //tim phan tu trong dslk don, hàm trả về địa chỉ ptu được tìm thấy, nếu ko trả về NULL
-node* SearchNode(List l, int x)
+Node* SearchNode(List l, int x)
 {
-    node* p = l.pHead;
+    Node* p = l.pHead;
     while(p != NULL && p->info != x)
         p = p->pNext;
     return p;
@@ -82,14 +82,14 @@ node* SearchNode(List l, int x)
     // {
     //     if(p->info == x)    return p;
     // }
-    // return NULL;
+    return p;
 }
 
 //huy phan tu trong dlsk don: phải cô lập phần tử trước khi hủy
 //Hủy ở đầu
 bool RemoveHead(List &l, int &x)
 {
-    node* p;
+    Node* p;
     if(l.pHead != NULL)
     {
         x = l.pHead->info;      //giữ giá trị sau khi xóa để sd nếu cần
@@ -103,9 +103,27 @@ bool RemoveHead(List &l, int &x)
     return 0;       //list rong ko co phan tu de xoa
 }
 
-bool RemoveAfterQ(List &l, int &x, node* Q)
+void RemoveTail(List &l)
 {
-    node* p;
+	if(l.pHead == NULL)		return;
+	Node* p = l.pTail;
+	if(l.pHead == l.pTail)
+		l.pHead = l.pTail = NULL;
+	else
+	{
+		Node* p1 = l.pHead;
+		while(p1->pNext->pNext != NULL)
+		{
+			p1 = p1->pNext;
+		}
+		l.pTail = p1;
+	}
+	delete p;
+}
+
+bool RemoveAfterQ(List &l, int &x, Node* Q)
+{
+    Node* p;
     if(Q != NULL)
     {
         p = Q->pNext;
@@ -124,8 +142,8 @@ bool RemoveAfterQ(List &l, int &x, node* Q)
 
 bool RemoveX(List &l, int &x)
 {
-    node* Q;
-    node* p;
+    Node* Q;
+    Node* p;
     Q = NULL;
     p = l.pHead;
     while(p!=NULL && p->info!=x)
@@ -144,7 +162,7 @@ void PrintList(List l)
     if(l.pHead == NULL)
         cout << "DSLK don rong";
     else{
-        node* p;
+        Node* p;
         cout << "List: ";
         for(p=l.pHead; p!=NULL; p=p->pNext)
         {
@@ -155,7 +173,7 @@ void PrintList(List l)
 
 void RemoveList(List &l)
 {
-    node* p;
+    Node* p;
     while(l.pHead != NULL)
     {
         p = l.pHead;
@@ -178,14 +196,14 @@ void CreateList(List &l)
     for(int i=0; i<n; i++)
     {
         cin >> x;
-        node* p = CreateNode(x);
+        Node* p = CreateNode(x);
         AddTail(l,p);
     }
 }
 
 void SelectionSort(List &l)
 {
-    node *p, *q, *min;
+    Node *p, *q, *min;
     for(p = l.pHead; p!=l.pTail; p=p->pNext)
     {
         min = p;
@@ -195,6 +213,11 @@ void SelectionSort(List &l)
         }
         swap(min->info, p->info);
     }
+}
+
+void Insertion(List &l)
+{
+    
 }
 
 void QuickSort(int a[], int left, int right)
@@ -219,7 +242,7 @@ void QuickSort(int a[], int left, int right)
 
 void QuickSort(List &l)
 {
-    node *p, *X;
+    Node *p, *X;
     List l1, l2;
     if(l.pHead == l.pTail)      return;     // da co thu tu roi
     CreateEmptyList(l1);
@@ -253,10 +276,27 @@ void QuickSort(List &l)
     }
 }
 
+void Reverse(List &l)
+{
+    Node* next = NULL;
+    Node* prev = NULL;
+    Node* cur = l.pHead;
+    l.pTail = l.pHead;
+    while(cur != NULL)
+    {
+        next = cur->pNext;
+        cur->pNext = prev;
+        prev = cur;
+        cur = next;
+    }
+    l.pHead = prev;
+}
+
 int main() {
     List l;
     CreateList(l);
-    QuickSort(l);
+    //QuickSort(l);
+    Reverse(l);
     PrintList(l);
     return 0;
 }

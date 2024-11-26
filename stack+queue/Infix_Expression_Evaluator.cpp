@@ -134,7 +134,6 @@ bool BracketMatching(string st)
 
 queue infix_to_postfix(string st)
 {
-    //string res = "";
     stack s;
     queue q;
     CreateEmptyStack(s);
