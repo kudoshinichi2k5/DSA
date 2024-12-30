@@ -66,13 +66,13 @@ void BubbleSort1(int a[], int n)
 
 void SelectionSort(int a[], int n)
 {
-    int min;
+    int minn;
     for(int i=0; i<n-1; i++)
     {
-        min=i;
+        minn=i;
         for(int j=i+1; j<n; j++)
-            if(a[min]>a[j])   min=j;
-        swap(a[i], a[min]);
+            if(a[minn]>a[j])   minn=j;
+        swap(a[i], a[minn]);
     }
 }
 
@@ -91,6 +91,7 @@ void InsertionSort(int a[], int n)
         a[j+1] = temp;
     }
 }
+
 
 void Tron(int a[], int n, int b[], int m, int c[], int &p)
 {
@@ -112,7 +113,7 @@ void Merge(int a[], int left, int middle, int right)
     int i=left, j=middle+1;
     while(!(i>middle && j>right))
     {
-        if((i<=middle && j<=right && a[i] < a[j]) || j>right)
+        if((i<=middle && j<=right && a[i] <= a[j]) || j>right)
             temp[m++] = a[i++];
         else
             temp[m++] = a[j++];
